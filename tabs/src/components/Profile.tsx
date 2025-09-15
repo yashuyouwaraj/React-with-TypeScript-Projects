@@ -32,14 +32,25 @@ const Profile = () => {
             </button>
         </div>
         {/* Logo */}
-        <div className='flex items-center ml-4 mt-[2rem]'>
+        <div className='flex items-center mt-[2rem]'>
             <img src={profileUrl} className='w-40 h-40 object-cover rounded-full border-white relative' alt="Channel Logo" />
-            <button className='absolute ml-[4rem] z-10 mt-[8rem] bg-gray-800 text-white p-2 rounded-full hover:bg-gray-600'>
+            <button className='absolute ml-[3.58rem] z-10 mt-[8rem] bg-gray-800 text-white p-2 rounded-full hover:bg-gray-600'>
                 <label htmlFor="profile-upload" className='cursor-pointer'>
                     <FaCamera size={24} />
                 </label>
                 <input type="file" id='profile-upload' accept='image/*' className='hidden' onChange={handleProfileChange} />
             </button>
+            
+            {/* Channel Details */}
+
+            <div className='ml-4 mt-4'>
+                <h1 className='text-2xl font-bold ml-[0.5rem]'>Yashu Youwaraj</h1>
+                <p className='ml-[0.5rem]'>10M views</p>
+                <p className='mt-2 ml-[0.5rem]'>This is a short description of the Youtube channel. It gives an overview of the content and what viewers can expect</p>
+                <button className='ml-[0.5rem] mt-4 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-500'>
+                    Subscribe
+                </button>
+            </div>
         </div>
 
     </div>

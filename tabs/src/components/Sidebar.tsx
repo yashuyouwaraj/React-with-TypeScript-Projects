@@ -5,7 +5,7 @@ import { IoMdSettings } from 'react-icons/io'
 
 const Sidebar = () => {
   return (
-    <aside className='sidebar fixed top-0 left-0 h-screen w-20 bg-[#1A1C1E] text-white'>
+    <aside className='sidebar fixed top-0 left-0 h-screen w-20 bg-[#1A1C1E] text-white z-10'>
         <ul className='p-4 flex flex-col justify-between items-center h-full'>
             <div className='top'>
                 <li className='mb-2'>
