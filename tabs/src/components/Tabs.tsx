@@ -95,18 +95,18 @@ const Tabs = () => {
             }`}
             onClick={() => setActiveTab(tab.id)}
           >
-                <div className="flex items-center justify-center space-x-2">
-                    {tab.icon}
-                    <span>{tab.label}</span>
-                </div>
-                </button>
+            <div className="flex items-center justify-center space-x-2">
+              {tab.icon}
+              <span>{tab.label}</span>
+            </div>
+          </button>
         ))}
-        </div>
-        <div className="mt-4 p-4 rounded-lg">
-            {tabs.find((tab)=>tab.id===activeTab)?.content}
-        </div>
+      </div>
+      <div className="mt-4 p-4 rounded-lg">
+        {tabs.find((tab) => tab.id === activeTab)?.content}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Tabs
+export default Tabs;
