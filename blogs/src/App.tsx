@@ -34,7 +34,6 @@ const App = () => {
               <button onClick={openModalForNewBlog} className="ml-[7rem] bg-black flex justify-center items-center text-white px-4 py-2 rounded mb-4">Add New Blog<IoMdAddCircle className="ml-[.5rems]" />{" "}</button>
 
               <ArticleList onEdit={openModalForEdit} />
-
               {isModalOpen && 
               <Modal onClose={()=>setModalOpen(false)}>
                 <BlogForm
