@@ -76,9 +76,14 @@ const Table = () => {
   );
 
   const [currentPage,setCurrentPage]=useState(1)
-  const itemsPerPage=5
+  const itemsPerPage=8
   const startIndex=(currentPage-1)*itemsPerPage
-  const currentProjects=filteredProjects
+  const currentProjects=filteredProjects.slice(startIndex,startIndex+itemsPerPage)
+  const totalPages=Math.ceil(filteredProjects.length/itemsPerPage)
+
+  const handlePageChange=(pageNumber:number)=>{
+    setCurrentPage(pageNumber)
+  }
 
   return (
     <div className="p-4 w-[93%] ml-[5rem]">
@@ -198,7 +203,7 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          {projects.map((project, index) => (
+          {currentProjects.map((project, index) => (
             <tr key={index} className="border border-gray-700">
               <td className="px-4 py-2">
                 <img
@@ -218,11 +223,11 @@ const Table = () => {
       {/* Pagination */}
 
       <div className="flex justify-end mt-4">
-        <button className="px-4 py-2 bg-gray-700 text-white rounded mr-2 disabled:opacity-50">
+        <button disabled={ currentPage === 1} onClick={()=>handlePageChange(currentPage-1)} className="px-4 py-2 bg-gray-700 text-white rounded mr-2 disabled:opacity-50">
           Previous
         </button>
-        <span className="px-4 py-2 text-white">Page 1 of 4</span>
-        <button className="px-4 py-2 bg-gray-700 text-white rounded mr-2 disabled:opacity-50">
+        <span className="px-4 py-2 text-white">Page {currentPage} of {totalPages}</span>
+        <button className="px-4 py-2 bg-gray-700 text-white rounded mr-2 disabled:opacity-50" disabled={ currentPage === totalPages} onClick={()=>handlePageChange(currentPage+1)}>
           Next
         </button>
       </div>
