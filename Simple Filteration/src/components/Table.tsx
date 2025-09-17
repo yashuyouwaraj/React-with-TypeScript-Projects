@@ -1,17 +1,27 @@
 import { useState } from "react";
 import { data } from "../utils/data";
 import { BiSort } from "react-icons/bi";
-import { AiOutlineDash, AiOutlineDown } from "react-icons/ai";
+import { AiOutlineDown } from "react-icons/ai";
 import { MdSort } from "react-icons/md";
 
 const Table = () => {
   const [projects, setProjects] = useState(data);
   const [dropdownVisible, SetDropdownVisible] = useState(false);
-  const [filterVisible,setFiltersVisible]=useState(false)
+  const [filterVisible, setFiltersVisible] = useState(false);
   const [sortConfig, setSortConfig] = useState<{
-    key: String;
-    direction: String;
+    key: string;
+    direction: "ascending" | "descending";
   } | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [filters, setFilters] = useState({
+    name: "",
+    country: "",
+    email: "",
+    project: "",
+    status: "",
+  });
+
   const sortProjects = (key: string) => {
     let sortedProjects = [...projects];
     if (
@@ -19,10 +29,14 @@ const Table = () => {
       sortConfig.key === key &&
       sortConfig.direction === "ascending"
     ) {
-      sortProjects.sort((a, b) => (a[key] > b[key] ? -1 : 1));
+      sortedProjects.sort((a, b) =>
+        (String((a as any)[key]) > String((b as any)[key]) ? -1 : 1)
+      );
       setSortConfig({ key, direction: "descending" });
     } else {
-      sortProjects.sort((a, b) => (a[key] > b[key] ? 1 : -1));
+      sortedProjects.sort((a, b) =>
+        (String((a as any)[key]) > String((b as any)[key]) ? 1 : -1)
+      );
       setSortConfig({ key, direction: "ascending" });
     }
     setProjects(sortedProjects);
@@ -31,6 +45,41 @@ const Table = () => {
     sortProjects(key);
     SetDropdownVisible(false);
   };
+
+  const handleFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilters({
+      ...filters,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const filteredProjects = projects.filter(
+    (project) =>
+      (searchQuery === "" ||
+        Object.values(project).some((value) =>
+          value.toLowerCase().includes(searchQuery.toLowerCase())
+        )) &&
+      (filters.name === "" ||
+        project.client.toLowerCase().includes(filters.name.toLowerCase())) &&
+      (filters.country === "" ||
+        project.country
+          .toLowerCase()
+          .includes(filters.country.toLowerCase())) &&
+      (filters.email === "" ||
+        project.email.toLowerCase().includes(filters.email.toLowerCase())) &&
+      (filters.project === "" ||
+        project.project
+          .toLowerCase()
+          .includes(filters.project.toLowerCase())) &&
+      (filters.status === "" ||
+        project.status.toLowerCase().includes(filters.status.toLowerCase()))
+  );
+
+  const [currentPage,setCurrentPage]=useState(1)
+  const itemsPerPage=5
+  const startIndex=(currentPage-1)*itemsPerPage
+  const currentProjects=filteredProjects
+
   return (
     <div className="p-4 w-[93%] ml-[5rem]">
       {/* Sorting */}
@@ -67,21 +116,69 @@ const Table = () => {
           )}
         </div>
         <div className="relative ml-4 w-full">
-          <button onClick={()=> setFiltersVisible(!filterVisible)} className="border border-gray-700 flex items-center justify-center text-white p-2 rounded">
+          <button
+            onClick={() => setFiltersVisible(!filterVisible)}
+            className="border border-gray-700 flex items-center justify-center text-white p-2 rounded"
+          >
             <MdSort className="mr-[0.3rem]" />
             Filters <AiOutlineDown className="ml-2" />
           </button>
           {filterVisible && (
-        <div className="absolute top-full left-0 mt-2 bg-gray-800 border-gray-700 rounded shadow-lg p-4">
-            <div className="mb-2">
+            <div className="absolute top-full left-0 mt-2 bg-gray-800 border-gray-700 rounded shadow-lg p-4">
+              <div className="mb-2">
                 <label className="block text-white">Filter by Name: </label>
-                <input type="text" name="name" className="bg-gray-900 text-white rounded p-2 w-full" />
+                <input
+                  type="text"
+                  name="name"
+                  className="bg-gray-900 text-white rounded p-2 w-full"
+                  value={filters.name}
+                  onChange={handleFilterChange}
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-white">Filter by Country: </label>
+                <input
+                  type="text"
+                  name="country"
+                  className="bg-gray-900 text-white rounded p-2 w-full"
+                  value={filters.country}
+                  onChange={handleFilterChange}
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-white">Filter by Email: </label>
+                <input
+                  type="text"
+                  name="email"
+                  className="bg-gray-900 text-white rounded p-2 w-full"
+                  value={filters.email}
+                  onChange={handleFilterChange}
+                />
+              </div>
+              <div className="mb-2">
+                <label className="block text-white">Filter by Project: </label>
+                <input
+                  type="text"
+                  name="project"
+                  className="bg-gray-900 text-white rounded p-2 w-full"
+                  value={filters.project}
+                  onChange={handleFilterChange}
+                />
+                <div className="mb-2">
+                  <label className="block text-white">Filter by Status: </label>
+                  <input
+                    type="text"
+                    name="status"
+                    className="bg-gray-900 text-white rounded p-2 w-full"
+                    value={filters.status}
+                    onChange={handleFilterChange}
+                  />
+                </div>
+              </div>
             </div>
-        </div>
-      )}
+          )}
         </div>
       </div>
-      
 
       {/* Main Table */}
 
@@ -101,15 +198,20 @@ const Table = () => {
           </tr>
         </thead>
         <tbody>
-          <tr className="border border-gray-700">
-            <td className="px-4 py-2">
-              <img src={projects.image} alt={projects.client} />
-            </td>
-            <td className="px-4 py-2">{projects.client}</td>
-            <td className="px-4 py-2">{projects.country}</td>
-            <td className="px-4 py-2">{projects.email}</td>
-            <td className="px-4 py-2">{projects.project}</td>
-          </tr>
+          {projects.map((project, index) => (
+            <tr key={index} className="border border-gray-700">
+              <td className="px-4 py-2">
+                <img
+                  src={project.image}
+                  alt={project.client}
+                  className="w-[3rem] h-[3rem] object-cover rounded-full"
+                />
+              </td>
+              <td className="px-4 py-2">{project.client}</td>
+              <td className="px-4 py-2">{project.country}</td>
+              <td className="px-4 py-2">{project.email}</td>
+              <td className="px-4 py-2">{project.project}</td>
+          </tr>))}
         </tbody>
       </div>
 
