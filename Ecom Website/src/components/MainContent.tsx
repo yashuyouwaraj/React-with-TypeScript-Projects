@@ -12,7 +12,7 @@ const MainContent = () => {
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const itemsPerPage = 20;
+  const itemsPerPage = 18;
 
   useEffect(() => {
     let url = `https://dummyjson.com/products?limit=${itemsPerPage}&skip=${
@@ -67,7 +67,7 @@ const MainContent = () => {
   
 
   return (
-    <section className="xl:w-[55rem] lg:w-[55rem] sm:w-[40rem] xs:w-[20rem] p-5">
+    <section className="xl:w-fit lg:w-[55rem] sm:w-[40rem] xs:w-[20rem] p-5">
       <div className="mb-5">
         <div className="flex flex-col sm:flex-row justify-between items-center">
           <div className="relative mb-5 mt-5">
@@ -101,7 +101,7 @@ const MainContent = () => {
             )}
           </div>
         </div>
-        <div className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-5">
+        <div className="grid grid-cols-6 sm:grid-cols-3 md:grid-cols-6 gap-5">
           {filteredProducts.map(product=>(
             <BookCard key={product.id} id={product.id} title={product.title} image={product.thumbnail} price={product.price} />
           ))}
