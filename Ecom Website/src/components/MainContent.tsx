@@ -103,7 +103,7 @@ const MainContent = () => {
   };
 
   return (
-    <section className="xl:w-[65rem] lg:w-[55rem] sm:w-[40rem] xs:w-[20rem] p-5">
+    <section className="xl:w-[55rem] mr-[10rem] lg:w-[55rem] sm:w-[40rem] xs:w-[20rem] p-5">
       <div className="mb-5">
         <div className="flex flex-col sm:flex-row justify-between items-center">
           <div className="relative mb-5 mt-5">
@@ -141,7 +141,7 @@ const MainContent = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-5 sm:grid-cols-3 lg:grid-cols-5 gap-5">
+        <div className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-5">
           {filteredProducts.map((product) => (
             <BookCard
               key={product.id}
