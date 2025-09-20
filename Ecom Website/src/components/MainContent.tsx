@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useFilter } from "./FilterContext";
-import  {Tally3 } from "lucide-react";
 import axios from "axios";
+import { useFilter } from "./FilterContext";
 import BookCard from "./BookCard";
+import { Tally3 } from "lucide-react";
 
 const MainContent = () => {
   const { searchQuery, selectedCategory, minPrice, maxPrice, keyword } =
@@ -12,7 +12,7 @@ const MainContent = () => {
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const itemsPerPage = 18;
+  const itemsPerPage = 12;
 
   useEffect(() => {
     let url = `https://dummyjson.com/products?limit=${itemsPerPage}&skip=${
@@ -41,16 +41,19 @@ const MainContent = () => {
         (product) => product.category === selectedCategory
       );
     }
+
     if (minPrice !== undefined) {
       filteredProducts = filteredProducts.filter(
         (product) => product.price >= minPrice
       );
     }
+
     if (maxPrice !== undefined) {
       filteredProducts = filteredProducts.filter(
         (product) => product.price <= maxPrice
       );
     }
+
     if (searchQuery) {
       filteredProducts = filteredProducts.filter((product) =>
         product.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -71,7 +74,7 @@ const MainContent = () => {
 
   const filteredProducts = getFilteredProducts();
 
-  const totalProducts = 180;
+  const totalProducts = 100;
   const totalPages = Math.ceil(totalProducts / itemsPerPage);
 
   const handlePageChange = (page: number) => {
@@ -100,15 +103,18 @@ const MainContent = () => {
   };
 
   return (
-    <section className="xl:w-fit lg:w-[55rem] sm:w-[40rem] xs:w-[20rem] p-5">
+    <section className="xl:w-[65rem] lg:w-[55rem] sm:w-[40rem] xs:w-[20rem] p-5">
       <div className="mb-5">
         <div className="flex flex-col sm:flex-row justify-between items-center">
           <div className="relative mb-5 mt-5">
-            <button onClick={()=>setDropdownOpen(!dropdownOpen)} className=" border px-4 py-2 rounded-full flex items-center">
+            <button
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              className="border px-4 py-2 rounded-full flex items-center"
+            >
               <Tally3 className="mr-2" />
               {filter === "all"
                 ? "Filter"
-                : filter.charAt(0).toLowerCase() + filter.slice(1)}
+                : filter.charAt(0).toUpperCase() + filter.slice(1)}
             </button>
             {dropdownOpen && (
               <div className="absolute bg-white border border-gray-300 rounded mt-2 w-full sm:w-40">
@@ -134,7 +140,8 @@ const MainContent = () => {
             )}
           </div>
         </div>
-        <div className="grid grid-cols-6 sm:grid-cols-3 lg:grid-cols-6 gap-5">
+
+        <div className="grid grid-cols-5 sm:grid-cols-3 lg:grid-cols-5 gap-5">
           {filteredProducts.map((product) => (
             <BookCard
               key={product.id}
@@ -145,8 +152,6 @@ const MainContent = () => {
             />
           ))}
         </div>
-
-        {/* Pagination */}
 
         <div className="flex flex-col sm:flex-row justify-between items-center mt-5">
           <button
